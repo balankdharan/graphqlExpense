@@ -81,8 +81,23 @@ const userResolver = {
   },
 
   Query: {
-    user: (_, { userId }) => {
-      return users.find((user) => user._id === userId);
+    authUser: async (_, __, context) => {
+      try {
+        const user = await context.getUser();
+        return user;
+      } catch (error) {
+        console.log("Error in authUser", error);
+        throw new Error(error.message || "Internal server error");
+      }
+    },
+    user: async (_, { userId }) => {
+      try {
+        const user = await User.findById(userId);
+        return user;
+      } catch (error) {
+        console.log("Error in getting user", error);
+        throw new Error(error.message || "Error getting user");
+      }
     },
   },
 };
