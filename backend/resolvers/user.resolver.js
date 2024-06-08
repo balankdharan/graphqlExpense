@@ -68,10 +68,10 @@ const userResolver = {
     logout: async (_, __, context) => {
       try {
         await context.logout();
-        req.session.destroy((err) => {
+        context.req.session.destroy((err) => {
           if (err) throw err;
         });
-        res.clearCookie("connect.sid");
+        context.res.clearCookie("connect.sid");
         return { message: "Logged Out" };
       } catch (err) {
         console.log("Error in logout", err);
@@ -84,9 +84,10 @@ const userResolver = {
     authUser: async (_, __, context) => {
       try {
         const user = await context.getUser();
+
         return user;
       } catch (error) {
-        console.log("Error in authUser", error);
+        console.error("Error in authUser", error);
         throw new Error(error.message || "Internal server error");
       }
     },
