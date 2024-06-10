@@ -23,7 +23,7 @@ const LoginPage = () => {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!loginData.username || !!loginData.password)
+    if (!loginData.username || !loginData.password)
       return toast.error("Please Fill all the fields");
     try {
       await login({
