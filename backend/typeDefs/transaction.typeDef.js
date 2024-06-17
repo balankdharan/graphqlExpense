@@ -8,6 +8,7 @@ const transactionTypeDef = `#graphql
         amount:Float!
         location:String
         date:String!
+        user:User!
     }
 
     type Query{
@@ -22,7 +23,7 @@ const transactionTypeDef = `#graphql
         deleteTransaction(transactionId: ID!): Transaction!
     }
     type CategoryStatistics{
-        category:String!,
+        category:String!
         totalAmount:Float!
     }
 

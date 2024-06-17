@@ -1,5 +1,5 @@
-import { users } from "../dummyData/data.js";
 import User from "../models/user.model.js";
+import Transaction from "../models/transaction.model.js";
 import bcrypt from "bcryptjs";
 
 const userResolver = {
@@ -29,7 +29,7 @@ const userResolver = {
           username,
           password: hashedPassword,
           gender,
-          profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
+          profilePicture: gender === "male" ? boyProfilePic : girlProfilePic,
         });
 
         await newUser.save();
@@ -84,6 +84,7 @@ const userResolver = {
     authUser: async (_, __, context) => {
       try {
         const user = await context.getUser();
+        console.log("User: " + user);
 
         return user;
       } catch (error) {
@@ -98,6 +99,17 @@ const userResolver = {
       } catch (error) {
         console.log("Error in getting user", error);
         throw new Error(error.message || "Error getting user");
+      }
+    },
+  },
+  User: {
+    transactions: async (parent) => {
+      try {
+        const transactions = await Transaction.find({ userId: parent._id });
+        return transactions;
+      } catch (err) {
+        console.log("Error in user transaction", err);
+        throw new Error(err.message || "Internal server error");
       }
     },
   },
